@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -5,15 +6,16 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
+// eslint-disable-next-line no-confusing-arrow
 const devServer = (isDev) => !isDev ? {} : {
   devServer: {
     open: true,
     hot: true,
-    port: 3002,    
+    port: 3002,
   },
 };
 
-const esLintPlugin = (isDev) => isDev ? [] : [ new ESLintPlugin({ extensions: ['ts', 'js'] }) ];
+const esLintPlugin = (isDev) => (isDev ? [] : [new ESLintPlugin({ extensions: ['ts', 'js'] })]);
 
 module.exports = ({ development }) => ({
   mode: development ? 'development' : 'production',
@@ -24,7 +26,7 @@ module.exports = ({ development }) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
-    assetModuleFilename: 'assets/[hash][ext]'
+    assetModuleFilename: 'assets/[hash][ext]',
   },
   module: {
     rules: [
@@ -47,30 +49,30 @@ module.exports = ({ development }) => ({
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-      }
-    ]
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+    ],
   },
   plugins: [
     ...esLintPlugin(development),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: '[name].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
       // title: 'async-race',
-      template: './src/index.html'
+      template: './src/index.html',
     }),
     new CopyPlugin({
       patterns: [
-        { from: './src/assets', to: './assets' },
+        { from: './src/assets', to: './assets', noErrorOnMissing: true },
       ],
     }),
     new CleanWebpackPlugin({
-      cleanStaleWebpackAssets: false
+      cleanStaleWebpackAssets: false,
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
-  ...devServer(development)
+  ...devServer(development),
 });
