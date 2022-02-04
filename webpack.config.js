@@ -7,13 +7,16 @@ const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 // eslint-disable-next-line no-confusing-arrow
-const devServer = (isDev) => !isDev ? {} : {
-  devServer: {
-    open: true,
-    hot: true,
-    port: 3002,
-  },
-};
+const devServer = (isDev) =>
+  !isDev
+    ? {}
+    : {
+        devServer: {
+          open: true,
+          hot: true,
+          port: 3002,
+        },
+      };
 
 const esLintPlugin = (isDev) => (isDev ? [] : [new ESLintPlugin({ extensions: ['ts', 'js'] })]);
 
@@ -63,9 +66,7 @@ module.exports = ({ development }) => ({
       template: './src/index.html',
     }),
     new CopyPlugin({
-      patterns: [
-        { from: './src/assets', to: './assets', noErrorOnMissing: true },
-      ],
+      patterns: [{ from: './src/assets', to: './assets', noErrorOnMissing: true }],
     }),
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
