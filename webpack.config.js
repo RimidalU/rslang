@@ -62,7 +62,7 @@ module.exports = ({ development }) => ({
       filename: '[name].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
-      // title: 'async-race',
+      title: 'rslang',
       template: './index.html',
     }),
     new CopyPlugin({
