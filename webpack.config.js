@@ -24,7 +24,7 @@ module.exports = ({ development }) => ({
   mode: development ? 'development' : 'production',
   devtool: development ? 'inline-source-map' : false,
   entry: {
-    main: './src/index.ts',
+    main: './index.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -63,7 +63,7 @@ module.exports = ({ development }) => ({
     }),
     new HtmlWebpackPlugin({
       // title: 'async-race',
-      template: './src/index.html',
+      template: './index.html',
     }),
     new CopyPlugin({
       patterns: [{ from: './src/assets', to: './assets', noErrorOnMissing: true }],
