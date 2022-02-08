@@ -3,7 +3,7 @@ import BaseComponent from '../BaseComponent/baseComponent';
 // import { PageIds } from '../../module/app';
 import './header.scss';
 
-const Buttons = [
+const buttons = [
   {
     id: PageIds.mainPage,
     text: 'to main',
@@ -35,7 +35,7 @@ class Header extends BaseComponent {
     const pageButtons = document.createElement('div');
     pageButtons.classList.add('header-wrapper');
     pageButtons.innerHTML = '<img src="../../assets/jpg/lion.jpg" alt="Lion" class="header-ico">';
-    Buttons.forEach((button) => {
+    buttons.forEach((button) => {
       const buttonHTML = document.createElement('a');
       buttonHTML.href = `#${button.id}`;
       buttonHTML.classList.add('header-button');

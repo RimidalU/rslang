@@ -1,14 +1,14 @@
-import Page from '../Components/Page/page';
-import AdminPage from '../Pages/Admin/admin';
-import AudiocallPage from '../Pages/Audiocall/audiocall';
-import ErrorPage from '../Pages/Error/error';
-import MainPage from '../Pages/Main/main';
-import SettingsPage from '../Pages/Settings/settings';
-import SprintPage from '../Pages/Sprint/sprint';
-import StatsPage from '../Pages/Stats/stats';
-import TextbookPage from '../Pages/Textbook/textbook';
-import Header from '../Components/Header/header';
-import Footer from '../Components/Footer/footer';
+import Page from '../components/Page';
+import AdminPage from '../Pages/Admin';
+import AudiocallPage from '../Pages/Audiocall';
+import ErrorPage from '../Pages/Error';
+import MainPage from '../Pages/Main';
+import SettingsPage from '../Pages/Settings';
+import SprintPage from '../Pages/Sprint';
+import StatsPage from '../Pages/Stats';
+import TextbookPage from '../Pages/Textbook';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { PageIds } from '../../declarations';
 
 class App {
