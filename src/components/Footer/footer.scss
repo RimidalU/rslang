@@ -1,12 +1,19 @@
 .footer__wrap {
+  position: relative;
+  width: 100%;
+
+  .footer__cont{
     width: 100%;
-    .footer__cont{
-      width: 100%;
-      display: flex;
-      justify-content: space-around;      
-      align-items: center;
-    }   
-  img {
-    width: 120px;    
+    display: flex;
+    justify-content: space-around;      
+    align-items: center;
   }
+  
+img {
+  width: 120px;    
+}
+a{
+  text-decoration: none;
+  color: black;
+}
 }

@@ -14,7 +14,7 @@ const devServer = (isDev) =>
         devServer: {
           open: true,
           hot: true,
-          port: 3003,
+          port: 3002,
         },
       };
 
