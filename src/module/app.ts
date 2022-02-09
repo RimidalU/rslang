@@ -59,7 +59,7 @@ class App {
     if (page) {
       const pageHTML = page.render();
       pageHTML.id = App.defaultPageId;
-      App.container.append(pageHTML);
+      App.container.insertAdjacentElement('beforeend', pageHTML);
     }
   }
 
@@ -77,10 +77,10 @@ class App {
   }
 
   run() {
-    App.container.append(this.header.render());
     App.renderNewPage('main-page');
-    App.container.append(this.footer.render());
     this.enableRouteChange();
+    App.container.prepend(this.header.render());
+    App.container.insertAdjacentElement('afterend', this.footer.render());
   }
 }
 
