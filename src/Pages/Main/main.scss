@@ -13,14 +13,6 @@ p, span{
   background: #EFF8ED;
   min-width: 70%;
 }
-.register-btn{
-  border: none;
-  padding: 15px 25px;
-  background: #96BB7C;
-  border-radius: 5px;
-  color: #FFFFFF;
-  font-weight: bold;
-}
 .description{
   position: relative;
   display: flex;
@@ -151,30 +143,6 @@ img{
   letter-spacing: 0.2px;
   color: #737373;
 }
-.back-to-top{
-  position: fixed;
-  bottom: 80px;
-  right: 40px;
-  z-index: 9999;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  line-height: 30px;
-  background: #96BB7C;
-  color: #FFFFFF;
-  cursor: pointer;
-  font-size: 54px;
-  border-radius: 50%;
-  display: none;
-  color: #FFFFFF;
-  text-decoration: none;
-}
-.back-to-top:hover {
-  background: green;
-}
-.back-to-top-show {
-  display: block;
-}
 @media(max-width: 1200px){
   .description-text{
     font-size: 28px;
@@ -236,18 +204,6 @@ img{
   }
 }
 @media(max-width: 560px){
-  .register-btn, .login-btn{
-    display: block;
-    margin-bottom: 20px;
-    text-align: center;
-    margin-left: 30px;
-  }
-  .login-btn{
-    padding-left: 30px;
-  }
-  .user-avatar{
-    display: none;
-  }
   .service-container{
     display: flex;
     flex-direction: column;
@@ -295,9 +251,6 @@ img{
 @media(max-width: 427px){
   .header{
     max-width: 85vw;
-  }
-  input[type=password], input[type=email], input[type=submit]{
-    max-width: 140px;
   }
 }
 @media(min-width: 1400px){
