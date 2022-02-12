@@ -2,19 +2,28 @@ export function getRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-export function createLevelBtn(): HTMLElement {
-  const wrapperForLeveleBtns = document.createElement('div');
-  wrapperForLeveleBtns.classList.add('level');
+// export function createLevelBtn(pageCount = 1): HTMLElement {
+//  const wrapperForLeveleBtns = document.createElement('div');
+//  wrapperForLeveleBtns.classList.add('wrapper-level');
+//  const gameDescriptionText = document.createElement('p');
+//  gameDescriptionText.innerHTML = 'Для начала игры выберите уровень';
+//  wrapperForLeveleBtns.append(gameDescriptionText);
+//  const containerForBtns = document.createElement('div');
+//  containerForBtns.classList.add('level');
 
-  for (let i = 0; i < 6; i++) {
-    const levelBtn = document.createElement('div');
-    levelBtn.innerHTML = `${i + 1}`;
-    levelBtn.classList.add('level__btn');
-    levelBtn.id = `${i + 1}-level`;
-    wrapperForLeveleBtns.append(levelBtn);
-  }
-  return wrapperForLeveleBtns;
-}
+//  for (let i = 0; i < 6; i++) {
+//    const levelBtn = document.createElement('button');
+//    levelBtn.innerHTML = `${i + 1}`;
+//    levelBtn.classList.add('level__btn');
+//    levelBtn.id = `${i + 1}-level`;
+
+//    levelBtn.addEventListener('click', () => console.log('aaa'));
+
+//    containerForBtns.append(levelBtn);
+//  }
+//  wrapperForLeveleBtns.append(containerForBtns);
+//  return wrapperForLeveleBtns;
+// }
 
 export function checkPage(hash: string) {
   const pageHash = window.location.hash.substring(1);

@@ -1,0 +1,17 @@
+.footer__wrap {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(47, 241, 241);
+
+    .footer__cont{
+      width: 100%;
+      display: flex;
+      justify-content: space-around;      
+      align-items: center;
+    }
+    
+  img {
+    width: 120px;    
+  }
+}
