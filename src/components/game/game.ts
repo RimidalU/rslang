@@ -1,4 +1,4 @@
-import { checkPage, createSoundReproductionBtn, getRandomNumber } from '../../utils/utils';
+import { getRandomNumber } from '../../utils/utils';
 import { IWords } from './interfacesForGame';
 
 export default abstract class Game {
@@ -15,11 +15,11 @@ export default abstract class Game {
     const wrapperStartGame = document.createElement('div');
     wrapperStartGame.classList.add('game__description-container');
 
-    const gameNameElement = document.createElement('div');
+    const gameNameElement = document.createElement('h1');
     gameNameElement.classList.add('game__name');
     gameNameElement.innerHTML = this.gameName;
 
-    const gameDescriptionElement = document.createElement('div');
+    const gameDescriptionElement = document.createElement('h3');
     gameDescriptionElement.classList.add('game__description');
     gameDescriptionElement.innerHTML = this.gameDescription;
 
@@ -33,7 +33,7 @@ export default abstract class Game {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  creteLevelBtns(pageCount = 1): HTMLElement {
+  creteLevelBtns(): HTMLElement {
     const wrapper = document.createElement('div');
     wrapper.classList.add('game__level-container');
     const gameDescriptionText = document.createElement('p');
@@ -49,33 +49,39 @@ export default abstract class Game {
       levelBtn.id = `${i + 1}-level`;
 
       containerForBtns.append(levelBtn);
+
+      levelBtn.addEventListener('click', () => {
+        localStorage.setItem('levelForAudioCallGame', `${i}`);
+      });
     }
     wrapper.append(containerForBtns);
     return wrapper;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getListOfWords(count: number): IWords[] {
-    if (checkPage('test')) {
-      console.log('Действие которое формирует список слов, если игра стартует со страницы учебника');
-    }
-    const arr: IWords[] = [];
+  getListOfWords(count = 20): IWords[] {
+    // if (checkPage()) {
+    //  console.log('Действие которое формирует список слов, если игра стартует со страницы учебника');
+    // }
+    const shuffleWords: IWords[] = [];
 
     const words = localStorage.getItem('words');
     if (words) {
       const parsedWords: IWords[] = JSON.parse(words);
 
       for (let i = 0; i < count; i++) {
-        const randomNumber: number = getRandomNumber(0, 19);
+        const randomNumber: number = getRandomNumber(0, count - 1);
         const randomWord = parsedWords[randomNumber];
-        if (!arr.some((el) => el.id === randomWord.id)) {
-          arr.push(parsedWords[randomNumber]);
+        if (!shuffleWords.some((el) => el.id === randomWord.id)) {
+          shuffleWords.push(parsedWords[randomNumber]);
         } else {
           i--;
         }
       }
     }
-    return arr;
+
+    localStorage.setItem('shuffleWords', JSON.stringify(shuffleWords));
+    return shuffleWords;
   }
 
   abstract getButtonsForAnswer(arrOfButtons: [], correctWordId: string): HTMLElement;

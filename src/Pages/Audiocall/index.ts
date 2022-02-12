@@ -18,7 +18,8 @@ class AudiocallPage extends Page {
     gameContainer.classList.add('audiocall-container');
     const game = new AudioCallGame(
       'Аудивызов',
-      'В данной игре необходимо из предложенных вариантов ответа выбрать правильный перевод слова, который услышите',
+      `Проверьте свой навык восприятия слов на слух. Выберите правильный вариант слова, которое услышали. 
+      Помните, что у Вас только одна попытка!`,
     );
     gameContainer.append(game.renderGame());
     this.container.append(gameContainer);
