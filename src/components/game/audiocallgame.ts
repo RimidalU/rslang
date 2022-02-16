@@ -6,9 +6,12 @@ import { IWords } from './interfacesForGame';
 export default class AudioCallGame extends Game {
   listOfWords: IWords[];
 
+  correctWordNumber: number;
+
   constructor(gameName: string, gameDescription: string) {
     super(gameName, gameDescription);
     this.listOfWords = [];
+    this.correctWordNumber = 0;
   }
 
   initLocalStorage(): void {
@@ -24,52 +27,69 @@ export default class AudioCallGame extends Game {
 
     const wrapperForAnswer = document.createElement('div');
     wrapperForAnswer.classList.add('answers-wrapper');
-    const correctWordNumber = getRandomNumber(0, 3);
+    const correctBtnNumber = getRandomNumber(0, 3);
 
-    let wordForSoundReproduction = '';
+    let soundPath = '';
     let soundReproductionBtn: HTMLElement;
+
+    const usedVariantWordForBtn: Record<string, unknown> = {};
+    const words = localStorage.getItem('words');
+    const parsedWords = words ? JSON.parse(words) : [];
 
     for (let i = 0; i < 4; i++) {
       const randomWordNumber = getRandomNumber(0, this.listOfWords.length - 1);
-
       const word = this.listOfWords[randomWordNumber];
+      const correctWord = parsedWords[this.correctWordNumber];
 
-      const btn = document.createElement('button');
-      btn.classList.add('answer-btn');
-      btn.id = `${i + 1}-answer`;
-      btn.innerHTML = word.wordTranslate;
-      btn.setAttribute('isCorrect', `${i === correctWordNumber}`);
+      if (!usedVariantWordForBtn[word.id] && word.wordTranslate !== correctWord.wordTranslate) {
+        // && !usedVariantWordForBtn[correctWordId]
+        const btn = document.createElement('button');
+        btn.classList.add('answer-btn');
+        btn.id = `${i + 1}-answer`;
+        btn.setAttribute('isCorrect', `${i === correctBtnNumber}`);
 
-      if (i === correctWordNumber) {
-        wordForSoundReproduction = word.audio;
-        soundReproductionBtn = createSoundReproductionBtn(wordForSoundReproduction);
+        if (i === correctBtnNumber) {
+          btn.innerHTML = correctWord.wordTranslate;
+          soundPath = correctWord.audio;
 
-        const correctWordIndex = this.listOfWords.findIndex((e) => e.audio === word.audio);
-        localStorage.setItem('correctWordIndex', `${correctWordIndex}`);
+          soundReproductionBtn = createSoundReproductionBtn(soundPath);
 
-        playField.append(soundReproductionBtn);
-      }
+          localStorage.setItem('correctWordIndex', `${this.correctWordNumber}`);
+          playField.append(soundReproductionBtn);
+          usedVariantWordForBtn[correctWord.id] = correctWord;
 
-      btn.addEventListener('click', (event: Event) => {
-        const button = event.currentTarget as HTMLElement;
-        const answer = button.getAttribute('isCorrect');
-
-        const index = Number(localStorage.getItem('correctWordIndex'));
-        const correctImgPath = this.listOfWords[index].image;
-
-        if (answer === 'true') {
-          button.classList.add('correct');
-          console.log('пометить слово как угаданное');
-
-          wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
+          this.correctWordNumber++;
         } else {
-          button.classList.add('incorrect');
-          console.log('пометить слово как не угаданное');
-          wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
+          btn.innerHTML = word.wordTranslate;
+          usedVariantWordForBtn[word.id] = word;
         }
-      });
+        // } else if (word.wordTranslate !== parsedWords[this.correctWordNumber].wordTranslate) {
+        //  btn.innerHTML = word.wordTranslate;
+        //  usedVariantWordForBtn[word.id] = word;
+        // }
 
-      wrapperForAnswer.append(btn);
+        btn.addEventListener('click', (event: Event) => {
+          const button = event.currentTarget as HTMLElement;
+          const answer = button.getAttribute('isCorrect');
+
+          const index = Number(localStorage.getItem('correctWordIndex'));
+          const correctImgPath = parsedWords[index].image;
+
+          if (answer === 'true') {
+            button.classList.add('correct');
+            console.log('пометить слово как угаданное');
+            wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
+          } else {
+            button.classList.add('incorrect');
+            console.log('пометить слово как не угаданное');
+            wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
+          }
+        });
+
+        wrapperForAnswer.append(btn);
+      } else {
+        i--;
+      }
     }
 
     playField.append(wrapperForAnswer);
@@ -125,7 +145,12 @@ export default class AudioCallGame extends Game {
       gameWrapper.innerHTML = '';
 
       gameWrapper.append(this.getButtonsForAnswer());
-      gameWrapper.append(nextWordBtn);
+
+      if (this.correctWordNumber === 19) {
+        console.log('Конец игры');
+      } else {
+        gameWrapper.append(nextWordBtn);
+      }
 
       document.querySelector('audio')?.play();
     });

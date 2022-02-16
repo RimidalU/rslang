@@ -30,6 +30,10 @@ export function createSoundReproductionBtn(path: string): HTMLElement {
 }
 
 export function getCorrectImg(path: string): HTMLElement {
+  if (document.querySelector('.play-field')?.contains(document.querySelector('.img__container'))) {
+    document.querySelector('.img__container')?.remove();
+  }
+
   const imgContainer = document.createElement('div');
   imgContainer.classList.add('img__container');
 
