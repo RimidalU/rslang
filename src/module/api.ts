@@ -1,4 +1,5 @@
 import { Word, ResponseUser, addtUser, SignIn, UserState } from './apiInterface';
+import { setStorage } from './storage';
 
 const errorMessange = 'Receive data error';
 
@@ -8,23 +9,27 @@ class ApiResource {
   private userUrl = `${this.baseUrl}/users`;
   private signInUrl = `${this.baseUrl}/signin`;
 
-  _userState: UserState = {
+  private _userState: UserState = {
     page: 0,
     group: 0,
-    userId: '', //620e500c7acea7001640b02c
+    userId: '',
     name: '',
-    token: '', //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGU1MDBjN2FjZWE3MDAxNjQwYjAyYyIsImlhdCI6MTY0NTEwNTI4OSwiZXhwIjoxNjQ1MTE5Njg5fQ.sKMvJI5QhYPPn0_zgcA1XSugX0CxorhWgDJm3089yvY"
+    token: '',
     refreshToken: '',
   };
 
   loader = false;
 
-  async getWords(page: number, group: number): Promise<Array<Word>> {
+  async getWords(page: number = this._userState.page, group: number = this._userState.group): Promise<Array<Word>> {
     this.loader = true;
     try {
       const response = await fetch(`${this.wordUrl}?page=${page}&group=${group}`);
       const wordsResponse = await response.json();
-      // console.log(wordsResponse);
+
+      this._userState.page = page;
+      this._userState.group = group;
+
+      setStorage(this._userState);
       return wordsResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -38,7 +43,7 @@ class ApiResource {
     try {
       const response = await fetch(`${this.wordUrl}/${id}`);
       const wordResponse = await response.json();
-      // console.log(wordResponse);
+
       return wordResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -59,7 +64,9 @@ class ApiResource {
         body: JSON.stringify(user),
       });
       const userResponse = await response.json();
-      console.log(userResponse);
+
+      setStorage(this._userState);
+
       return userResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -86,7 +93,7 @@ class ApiResource {
       this._userState.userId = userId;
       this._userState.name = name;
 
-      console.log(signInResponse);
+      setStorage(this._userState);
 
       return signInResponse;
     } catch (e) {
@@ -133,6 +140,8 @@ class ApiResource {
 
       console.log(updatedUserResponse);
 
+      setStorage(this._userState);
+
       return updatedUserResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -155,12 +164,21 @@ class ApiResource {
       this._userState.userId = '';
       this._userState.token = '';
       this._userState.refreshToken = '';
+      setStorage(this._userState);
       console.log('user deleted!');
     } catch (e) {
       throw new Error(errorMessange);
     } finally {
       this.loader = false;
     }
+  }
+
+  get userState(): UserState {
+    return this._userState;
+  }
+
+  set userState(newUserState: UserState) {
+    this._userState = newUserState;
   }
 }
 
