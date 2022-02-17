@@ -1,5 +1,6 @@
+import ApiResource from '../../module/api';
+import { Word } from '../../module/apiInterface';
 import { getRandomNumber } from '../../utils/utils';
-import { IWords } from './interfacesForGame';
 
 export default abstract class Game {
   gameName: string;
@@ -23,11 +24,8 @@ export default abstract class Game {
     gameDescriptionElement.classList.add('game__description');
     gameDescriptionElement.innerHTML = this.gameDescription;
 
-    // const levelBtns: HTMLElement = this.creteLevelBtns();
-
     wrapperStartGame.append(gameNameElement);
     wrapperStartGame.append(gameDescriptionElement);
-    // wrapperStartGame.append(levelBtns);
 
     return wrapperStartGame;
   }
@@ -59,24 +57,25 @@ export default abstract class Game {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getListOfWords(count = 20): IWords[] {
+  async getListOfWords(level: number, count = 20): Promise<Word[]> {
     // if (checkPage()) {
     //  console.log('Действие которое формирует список слов, если игра стартует со страницы учебника');
     // }
-    const shuffleWords: IWords[] = [];
+    const shuffleWords: Word[] = [];
 
-    const words = localStorage.getItem('words');
-    if (words) {
-      const parsedWords: IWords[] = JSON.parse(words);
+    const randomPage = getRandomNumber(0, 29);
+    console.log(randomPage);
 
-      for (let i = 0; i < count; i++) {
-        const randomNumber: number = getRandomNumber(0, count - 1);
-        const randomWord = parsedWords[randomNumber];
-        if (!shuffleWords.some((el) => el.id === randomWord.id)) {
-          shuffleWords.push(parsedWords[randomNumber]);
-        } else {
-          i--;
-        }
+    const apiResource = new ApiResource();
+    const wordsForGame = await apiResource.getWords(randomPage, level);
+
+    for (let i = 0; i < count; i++) {
+      const randomNumber: number = getRandomNumber(0, count - 1);
+      const randomWord = wordsForGame[randomNumber];
+      if (!shuffleWords.some((el) => el.id === randomWord.id)) {
+        shuffleWords.push(wordsForGame[randomNumber]);
+      } else {
+        i--;
       }
     }
 

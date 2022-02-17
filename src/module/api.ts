@@ -4,6 +4,7 @@ const errorMessange = 'Receive data error';
 
 class ApiResource {
   private baseUrl = 'https://rslang-learn.herokuapp.com';
+
   private wordUrl = `${this.baseUrl}/words`;
 
   loader = false;
@@ -13,7 +14,7 @@ class ApiResource {
     try {
       const response = await fetch(`${this.wordUrl}?page=${page}&group=${group}`);
       const wordsResponse = await response.json();
-      console.log(wordsResponse);
+      // console.log(wordsResponse);
       return wordsResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -27,7 +28,7 @@ class ApiResource {
     try {
       const response = await fetch(`${this.wordUrl}/${id}`);
       const wordResponse = await response.json();
-      console.log(wordResponse);
+      // console.log(wordResponse);
       return wordResponse;
     } catch (e) {
       throw new Error(errorMessange);

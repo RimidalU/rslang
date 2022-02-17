@@ -1,10 +1,10 @@
 /* eslint-disable class-methods-use-this */
+import { Word } from '../../module/apiInterface';
 import { checkPage, createSoundReproductionBtn, getCorrectImg, getRandomNumber } from '../../utils/utils';
 import Game from './game';
-import { IWords } from './interfacesForGame';
 
 export default class AudioCallGame extends Game {
-  listOfWords: IWords[];
+  listOfWords: Word[];
 
   correctWordNumber: number;
 
@@ -33,16 +33,13 @@ export default class AudioCallGame extends Game {
     let soundReproductionBtn: HTMLElement;
 
     const usedVariantWordForBtn: Record<string, unknown> = {};
-    const words = localStorage.getItem('words');
-    const parsedWords = words ? JSON.parse(words) : [];
 
     for (let i = 0; i < 4; i++) {
       const randomWordNumber = getRandomNumber(0, this.listOfWords.length - 1);
       const word = this.listOfWords[randomWordNumber];
-      const correctWord = parsedWords[this.correctWordNumber];
+      const correctWord = this.listOfWords[this.correctWordNumber];
 
       if (!usedVariantWordForBtn[word.id] && word.wordTranslate !== correctWord.wordTranslate) {
-        // && !usedVariantWordForBtn[correctWordId]
         const btn = document.createElement('button');
         btn.classList.add('answer-btn');
         btn.id = `${i + 1}-answer`;
@@ -63,17 +60,13 @@ export default class AudioCallGame extends Game {
           btn.innerHTML = word.wordTranslate;
           usedVariantWordForBtn[word.id] = word;
         }
-        // } else if (word.wordTranslate !== parsedWords[this.correctWordNumber].wordTranslate) {
-        //  btn.innerHTML = word.wordTranslate;
-        //  usedVariantWordForBtn[word.id] = word;
-        // }
 
         btn.addEventListener('click', (event: Event) => {
           const button = event.currentTarget as HTMLElement;
           const answer = button.getAttribute('isCorrect');
 
           const index = Number(localStorage.getItem('correctWordIndex'));
-          const correctImgPath = parsedWords[index].image;
+          const correctImgPath = this.listOfWords[index].image;
 
           if (answer === 'true') {
             button.classList.add('correct');
@@ -106,7 +99,7 @@ export default class AudioCallGame extends Game {
     startBtn.innerText = 'Начать игру';
     startGameBtnContainer.append(startBtn);
 
-    startBtn.addEventListener('click', () => {
+    startBtn.addEventListener('click', async () => {
       const choisedLevel = localStorage.getItem('levelForAudioCallGame');
       const gameWrapper = document.querySelector('.game') as HTMLElement;
 
@@ -121,6 +114,9 @@ export default class AudioCallGame extends Game {
         }, 2000);
       } else {
         console.log('Уровень выбран');
+        const levelString = localStorage.getItem('levelForAudioCallGame');
+        const level: number = levelString ? +levelString : -1;
+        this.listOfWords = await this.getListOfWords(level);
 
         gameWrapper.innerHTML = '';
         gameWrapper.append(this.getButtonsForAnswer());
@@ -146,7 +142,7 @@ export default class AudioCallGame extends Game {
 
       gameWrapper.append(this.getButtonsForAnswer());
 
-      if (this.correctWordNumber === 19) {
+      if (this.correctWordNumber > 19) {
         console.log('Конец игры');
       } else {
         gameWrapper.append(nextWordBtn);
@@ -173,8 +169,6 @@ export default class AudioCallGame extends Game {
       gameWrapper.append(levelSelectionElement);
       const startBtn = this.startGameBtn();
       gameWrapper.append(startBtn);
-
-      this.listOfWords = this.getListOfWords(20);
     }
 
     return gameWrapper;
