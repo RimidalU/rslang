@@ -30,7 +30,6 @@ export default abstract class Game {
     return wrapperStartGame;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   creteLevelBtns(): HTMLElement {
     const wrapper = document.createElement('div');
     wrapper.classList.add('game__level-container');
@@ -56,7 +55,6 @@ export default abstract class Game {
     return wrapper;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getListOfWords(level: number, count = 20): Promise<Word[]> {
     // if (checkPage()) {
     //  console.log('Действие которое формирует список слов, если игра стартует со страницы учебника');
@@ -64,7 +62,6 @@ export default abstract class Game {
     const shuffleWords: Word[] = [];
 
     const randomPage = getRandomNumber(0, 29);
-    console.log(randomPage);
 
     const apiResource = new ApiResource();
     const wordsForGame = await apiResource.getWords(randomPage, level);
