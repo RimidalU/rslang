@@ -54,8 +54,6 @@ export default class AudioCallGame extends Game {
           localStorage.setItem('correctWordIndex', `${this.correctWordNumber}`);
           playField.append(soundReproductionBtn);
           usedVariantWordForBtn[correctWord.id] = correctWord;
-
-          this.correctWordNumber++;
         } else {
           btn.innerHTML = word.wordTranslate;
           usedVariantWordForBtn[word.id] = word;
@@ -76,6 +74,10 @@ export default class AudioCallGame extends Game {
             button.classList.add('incorrect');
             console.log('пометить слово как не угаданное');
             wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
+          }
+
+          if (this.correctWordNumber === 19) {
+            playField.append(this.gameResult());
           }
         });
 
@@ -139,12 +141,10 @@ export default class AudioCallGame extends Game {
     nextWordBtn.addEventListener('click', () => {
       const gameWrapper = document.querySelector('.game') as HTMLElement;
       gameWrapper.innerHTML = '';
-
       gameWrapper.append(this.getButtonsForAnswer());
 
-      if (this.correctWordNumber > 19) {
-        console.log('Конец игры');
-      } else {
+      if (this.correctWordNumber !== 19) {
+        this.correctWordNumber++;
         gameWrapper.append(nextWordBtn);
       }
 
@@ -174,5 +174,15 @@ export default class AudioCallGame extends Game {
     return gameWrapper;
   }
 
-  gameResult(): void {}
+  gameResult(): HTMLElement {
+    const playField = document.querySelector('.play-field') as HTMLElement;
+    playField.innerHTML = '';
+
+    const gameResultContainer = document.createElement('div');
+    gameResultContainer.classList.add('game-result');
+
+    gameResultContainer.innerText = 'ffffff';
+
+    return gameResultContainer;
+  }
 }

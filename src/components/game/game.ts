@@ -87,5 +87,5 @@ export default abstract class Game {
 
   abstract startGameBtn(): HTMLElement;
   abstract renderGame(): void;
-  abstract gameResult(): void;
+  abstract gameResult(): HTMLElement;
 }
