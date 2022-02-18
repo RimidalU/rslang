@@ -25,8 +25,6 @@ class TextbookPage extends Page {
 
   static bookSection = localStorage.categoryPage ? localStorage.categoryPage : 0;
 
-  static isRep = false;
-
   static inputPage: HTMLInputElement = pageInput;
 
   static inputCategory: HTMLInputElement = sectionInput;
@@ -35,7 +33,7 @@ class TextbookPage extends Page {
 
   static changeArr() {
     TextbookPage.wordsArr = newApi.getWords(TextbookPage.bookPage, TextbookPage.bookSection);
-  }
+  } // меняет массив
 
   render() {
     this.container.innerHTML = '';
@@ -45,9 +43,9 @@ class TextbookPage extends Page {
     cardContainer.classList.add('card-container');
     this.container.innerHTML += TextbookPage.component.textbookTitle;
     const pageInfo = document.createElement('p');
-    pageInfo.textContent = `Страница ${TextbookPage.bookPage + 1}`;
+    pageInfo.textContent = `Страница ${+TextbookPage.bookPage + 1}`;
     const sectionInfo = document.createElement('p');
-    sectionInfo.textContent = `Раздел ${TextbookPage.bookSection + 1}`;
+    sectionInfo.textContent = `Раздел ${+TextbookPage.bookSection + 1}`;
     this.container.prepend(TextbookPage.inputPage);
     this.container.prepend(TextbookPage.inputCategory);
     this.container.prepend(sectionInfo);
@@ -77,20 +75,20 @@ class TextbookPage extends Page {
     });
 
     return this.container;
-  }
+  } // возвращает конт
 }
 
 TextbookPage.inputPage.addEventListener('change', () => {
   TextbookPage.bookPage = +TextbookPage.inputPage.value - 1;
+  localStorage.removeItem('bookPage');
   localStorage.bookPage = TextbookPage.bookPage;
-  TextbookPage.isRep = true;
   TextbookPage.changeArr();
 });
 
 TextbookPage.inputCategory.addEventListener('change', () => {
   TextbookPage.bookSection = +TextbookPage.inputCategory.value - 1;
+  localStorage.removeItem('categoryPage');
   localStorage.categoryPage = TextbookPage.bookSection;
-  TextbookPage.isRep = true;
   TextbookPage.changeArr();
 });
 
