@@ -16,3 +16,33 @@ p {
   text-transform: uppercase;
   font-size: 30px;
 }
+
+.answers-wrapper {
+  display: flex;
+  font-family: 'Montserrat', sans-serif;
+}
+.answer-btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  width: 120px;
+  height: 50px;
+  margin: 10px 5px;
+  border: solid 1px transparent;
+  border-radius: 7px;
+  padding: 10px 3px;
+  color: #ffffff;
+  background-color: #b67ecc;
+}
+
+.answer-btn:active {
+  transform: translateY(1px);
+  filter: saturate(150%);
+}
+
+.answer-btn:hover,
+.answer-btn:focus {
+  color: #b67ecc;
+  border-color: currentColor;
+  background-color: white;
+}
