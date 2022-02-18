@@ -152,6 +152,10 @@ img{
   color: #737373;
 }
 @media(max-width: 1200px){
+  .description{
+    align-items: start;
+    padding-top: 30px;
+  }
   .description-text{
     font-size: 28px;
   }

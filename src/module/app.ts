@@ -83,5 +83,4 @@ class App {
     App.container.insertAdjacentElement('afterend', this.footer.render());
   }
 }
-
 export default App;

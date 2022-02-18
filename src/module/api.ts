@@ -4,6 +4,7 @@ const errorMessange = 'Receive data error';
 
 class ApiResource {
   private baseUrl = 'https://rslang-learn.herokuapp.com';
+
   private wordUrl = `${this.baseUrl}/words`;
 
   loader = false;
@@ -37,4 +38,5 @@ class ApiResource {
   }
 }
 
-export default ApiResource;
+const newApi = new ApiResource();
+export default newApi;
