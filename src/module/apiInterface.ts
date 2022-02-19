@@ -1,6 +1,4 @@
 export interface Word {
-  findIndex(arg0: (e: any) => boolean);
-  result: boolean;
   id: string;
   group: 0;
   page: 0;
