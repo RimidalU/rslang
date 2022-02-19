@@ -1,4 +1,4 @@
-// import ApiResource from './src/module/api';
+import apiResource from './src/module/api';
 import App from './src/module/app';
 import { getStorage } from './src/module/storage';
 
@@ -8,8 +8,6 @@ window.location.hash = '#main-page';
 
 app.run();
 
-const apiResource = new ApiResource();
-
 apiResource.userState = getStorage();
 
 apiResource.getWords();
@@ -17,15 +15,15 @@ apiResource.getWords();
 // apiResource.getWord('5e9f5ee35eb9e72bc21af7de');
 
 // apiResource.createUser({
-//   name: 'Us87rffjhr 4y',
-//   email: 'striorffjjgi7odng@rss.com',
-//   password: 'ste7fjhgryng23456',
+//   name: '74rr44r2y',
+//   email: 'stri7gr44@rss.com',
+//   password: 'ster4r423456',
 // });
 
 // apiResource.signInUser({
-//   name: 'User 2',
-//   email: 'striong@rss.com',
-//   password: 'string123456',
+//   name: '74rr44r2y',
+//   email: 'stri7gr44@rss.com',
+//   password: 'ster4r423456',
 // });
 
 // apiResource.getUser();
@@ -37,3 +35,42 @@ apiResource.getWords();
 // });
 
 // apiResource.deleteUser();
+
+// apiResource.createUserWord('5e9f5ee35eb9e72bc21afbea', {
+//   difficulty: 'easy',
+//   optional: {
+//     status: false,
+//   },
+// });
+
+// apiResource.getUserWords();
+
+// apiResource.getUserWord('5e9f5ee35eb9e72bc21af4a6');
+
+// apiResource.updateUserWord('6210c7d5248f83001632a2f8', {
+//   difficulty: 'hard',
+//   optional: {
+//     status: true,
+//   },
+// });
+
+// apiResource.deleteUserWord('5e9f5ee35eb9e72bc21af4a2');
+
+// apiResource.getUserAggregatedWords();
+// apiResource.getUserAggregatedWord('5e9f5ee35eb9e72bc21af4a2');
+
+// apiResource.setUserStatistics({
+//   learnedWords: 8,
+//   optional: {
+//     key: true,
+//   },
+// });
+// apiResource.getUserStatistics();
+
+// apiResource.setUserSettings({
+//   wordsPerDay: 8,
+//   optional: {
+//     key: true,
+//   },
+// });
+// apiResource.getUserSettings();

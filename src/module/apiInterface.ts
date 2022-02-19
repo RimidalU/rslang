@@ -19,7 +19,7 @@ export interface User {
   name?: string;
   email: string;
 }
-export interface addtUser extends User {
+export interface AddUser extends User {
   password: string;
 }
 export interface ResponseUser extends User {
@@ -29,23 +29,17 @@ export interface ResponseUser extends User {
 export interface UserState {
   page: number;
   group: number;
-  // aggregatedWords: {
-  //   page: number;
-  //   group: number;
-  //   wordsPerPage: number;
-  //   filter: string;
-  // };
   userId: string;
   name: string;
   token: string;
   refreshToken: string;
+  aggregatedWords: {
+    page: number;
+    group: number;
+    wordsPerPage: number;
+    filter: string;
+  };
 }
-
-// export interface UserId {
-//   // Update a user, signin
-//   id: string;
-//   email: string;
-// }
 
 export interface SignIn {
   message: string;
@@ -53,4 +47,24 @@ export interface SignIn {
   refreshToken: string;
   userId: string;
   name: string;
+}
+
+export interface UserWord {
+  difficulty: string;
+  optional?: {
+    [key: string]: boolean;
+  };
+}
+export interface Statistics {
+  learnedWords: number;
+  optional?: {
+    [key: string]: string | boolean;
+  };
+}
+
+export interface Settings {
+  wordsPerDay: number;
+  optional?: {
+    [key: string]: string | boolean;
+  };
 }
