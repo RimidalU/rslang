@@ -5,10 +5,11 @@
 import Page from '../../components/Page';
 import './textbook.scss';
 import BookCard from '../../components/BookCard/bookCard';
-import newApi from '../../module/api';
+// import ApiR from '../../module/api';
 import { Word } from '../../module/apiInterface';
 import pageInput from '../../components/Select/inputs';
 import sectionInput from '../../components/Select/inputs2';
+import apiResource from '../../module/api';
 
 class TextbookPage extends Page {
   static component = {
@@ -29,10 +30,10 @@ class TextbookPage extends Page {
 
   static inputCategory: HTMLInputElement = sectionInput;
 
-  static wordsArr = newApi.getWords(TextbookPage.bookPage, TextbookPage.bookSection);
+  static wordsArr = apiResource.getWords(TextbookPage.bookPage, TextbookPage.bookSection);
 
   static changeArr() {
-    TextbookPage.wordsArr = newApi.getWords(TextbookPage.bookPage, TextbookPage.bookSection);
+    TextbookPage.wordsArr = apiResource.getWords(TextbookPage.bookPage, TextbookPage.bookSection);
   } // меняет массив
 
   render() {
