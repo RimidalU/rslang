@@ -5,15 +5,12 @@ import './audiocall.scss';
 class AudiocallPage extends Page {
   static component = {
     audiocallTitle: `
-      <div class="audiocall-container">
+      <div class="audiocall-container">        
         <p class="audiocall-title">audiocall page</p>
       </div>`,
   };
 
   render() {
-    // const title = this.createHeaderTitle(AudiocallPage.component.audiocallTitle);
-    // this.container.append(title);
-
     const gameContainer = document.createElement('div');
     gameContainer.classList.add('audiocall-container');
     const game = new AudioCallGame(
