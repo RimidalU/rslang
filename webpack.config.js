@@ -31,9 +31,6 @@ module.exports = ({ development }) => ({
     filename: '[name].[contenthash].js',
     assetModuleFilename: 'assets/[hash][ext]',
   },
-  experiments: {
-    topLevelAwait: true,
-  },
   module: {
     rules: [
       {

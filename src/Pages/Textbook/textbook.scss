@@ -2,65 +2,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;  
-  font-family: 'Montserrat', sans-serif;
 }
-.card-container{
-  display: grid;
-  grid-template-columns: 6fr 6fr;
-  gap: 50px;
-}
-.card-img{
-  object-fit: cover;
-}
-.audio-svg{
-  position: absolute;
-  top: 10;
-  right: 10;
-}
-.book-description{
+
+.textbook-container{
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
+  height: 70vh;
 }
-.book-card{
-  border-radius: 5px;
-  border: 1px solid black;
-  box-shadow: 17px 17px 17px rgba(0, 10, 0, 0.4);
-  background-color: #fff;
-  margin: 60px;
-  transition: 1.2s;
-  color:#fff;
-}
-.book-card:hover{
-  transform: scale(1.1);
-}
-h3{
-  font-weight: 900;
-}
+
 p{
-  font-size: .8rem;
-  margin: 20px;
-  font-weight: 700;
-}
-input[type="text"]{
-  padding: 12px 20px;
-  margin: 20px;
-}
-input[type=text]:focus {
-  background-color: #96BB7C;
-}
-@media(max-width: 770px){
-  .card-container{
-    grid-template-columns: 12fr;
-  }
-  .book-card{
-    margin: 40px;
-  }
-}
-@media(max-width: 500px){
-  .book-card{
-    margin: 10px;
-    box-shadow: none;
-  }
+  text-transform: uppercase;
+  font-size: 30px;
 }
