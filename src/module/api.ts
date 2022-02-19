@@ -1,4 +1,4 @@
-import { Word, ResponseUser, addtUser, SignIn, UserState } from './apiInterface';
+import { Word, ResponseUser, AddUser, SignIn, UserState, UserWord, Statistics, Settings } from './apiInterface';
 import { setStorage } from './storage';
 
 const errorMessange = 'Receive data error';
@@ -7,30 +7,38 @@ class ApiResource {
   private baseUrl = 'https://rslang-learn.herokuapp.com';
 
   private wordUrl = `${this.baseUrl}/words`;
+
   private userUrl = `${this.baseUrl}/users`;
+
   private signInUrl = `${this.baseUrl}/signin`;
 
-  private _userState: UserState = {
+  private userCurrentState: UserState = {
     page: 0,
-    group: 0,
+    group: 1,
     userId: '',
     name: '',
     token: '',
     refreshToken: '',
+    aggregatedWords: {
+      page: 0,
+      group: 1,
+      wordsPerPage: 6,
+      filter: '{"$or":[{"userWord.difficulty":"easy"},{"userWord":null}]}',
+    },
   };
 
   loader = false;
 
-  async getWords(page: number = this._userState.page, group: number = this._userState.group): Promise<Array<Word>> {
+  async getWords(page: number = this.userCurrentState.page, group: number = this.userCurrentState.group): Promise<Array<Word>> {
     this.loader = true;
     try {
       const response = await fetch(`${this.wordUrl}?page=${page}&group=${group}`);
       const wordsResponse = await response.json();
 
-      this._userState.page = page;
-      this._userState.group = group;
+      this.userCurrentState.page = page;
+      this.userCurrentState.group = group;
 
-      setStorage(this._userState);
+      setStorage(this.userCurrentState);
       return wordsResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -52,7 +60,7 @@ class ApiResource {
     }
   }
 
-  async createUser(user: addtUser): Promise<ResponseUser> {
+  async createUser(user: AddUser): Promise<ResponseUser> {
     this.loader = true;
     try {
       const response = await fetch(`${this.userUrl}`, {
@@ -65,7 +73,7 @@ class ApiResource {
       });
       const userResponse = await response.json();
 
-      setStorage(this._userState);
+      setStorage(this.userCurrentState);
 
       return userResponse;
     } catch (e) {
@@ -75,7 +83,7 @@ class ApiResource {
     }
   }
 
-  async signInUser(user: addtUser): Promise<SignIn> {
+  async signInUser(user: AddUser): Promise<SignIn> {
     this.loader = true;
     try {
       const response = await fetch(`${this.signInUrl}`, {
@@ -88,12 +96,12 @@ class ApiResource {
       });
       const signInResponse: SignIn = await response.json();
       const { token, refreshToken, userId, name } = signInResponse;
-      this._userState.token = token;
-      this._userState.refreshToken = refreshToken;
-      this._userState.userId = userId;
-      this._userState.name = name;
+      this.userCurrentState.token = token;
+      this.userCurrentState.refreshToken = refreshToken;
+      this.userCurrentState.userId = userId;
+      this.userCurrentState.name = name;
 
-      setStorage(this._userState);
+      setStorage(this.userCurrentState);
 
       return signInResponse;
     } catch (e) {
@@ -103,19 +111,18 @@ class ApiResource {
     }
   }
 
-  async getUser(userId: string = this._userState.userId): Promise<addtUser> {
+  async getUser(userId: string = this.userCurrentState.userId): Promise<AddUser> {
     this.loader = true;
     try {
       const response = await fetch(`${this.userUrl}/${userId}`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${this._userState.token}`,
+          Authorization: `Bearer ${this.userCurrentState.token}`,
           Accept: 'application/json',
         },
       });
-      const getUserResponse: addtUser = await response.json();
+      const getUserResponse: AddUser = await response.json();
 
-      console.log(getUserResponse);
       return getUserResponse;
     } catch (e) {
       throw new Error(errorMessange);
@@ -124,23 +131,21 @@ class ApiResource {
     }
   }
 
-  async updateUser(newUser: addtUser, userId: string = this._userState.userId): Promise<addtUser> {
+  async updateUser(newUser: AddUser, userId: string = this.userCurrentState.userId): Promise<AddUser> {
     this.loader = true;
     try {
       const response = await fetch(`${this.userUrl}/${userId}`, {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${this._userState.token}`,
+          Authorization: `Bearer ${this.userCurrentState.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUser),
       });
-      const updatedUserResponse: addtUser = await response.json();
+      const updatedUserResponse: AddUser = await response.json();
 
-      console.log(updatedUserResponse);
-
-      setStorage(this._userState);
+      setStorage(this.userCurrentState);
 
       return updatedUserResponse;
     } catch (e) {
@@ -150,22 +155,259 @@ class ApiResource {
     }
   }
 
-  async deleteUser(userId: string = this._userState.userId): Promise<void> {
+  async deleteUser(userId: string = this.userCurrentState.userId): Promise<void> {
     this.loader = true;
     try {
       await fetch(`${this.userUrl}/${userId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${this._userState.token}`,
+          Authorization: `Bearer ${this.userCurrentState.token}`,
           Accept: 'application/json',
         },
       });
 
-      this._userState.userId = '';
-      this._userState.token = '';
-      this._userState.refreshToken = '';
-      setStorage(this._userState);
-      console.log('user deleted!');
+      this.userCurrentState.userId = '';
+      this.userCurrentState.token = '';
+      this.userCurrentState.refreshToken = '';
+      setStorage(this.userCurrentState);
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async createUserWord(wordId: string, userWordBody: UserWord) {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${this.userCurrentState.userId}/words/${wordId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userWordBody),
+      });
+      const createUserWordResponse = await response.json();
+      return createUserWordResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async getUserWords(userId: string = this.userCurrentState.userId): Promise<UserWord[]> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/words`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const getUserWordsResponse: UserWord[] = await response.json();
+
+      return getUserWordsResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async getUserWord(wordId: string, userId: string = this.userCurrentState.userId): Promise<UserWord> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/words/${wordId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const getUserWordResponse = await response.json();
+
+      return getUserWordResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async updateUserWord(wordId: string, userWordBody: UserWord, userId: string = this.userCurrentState.userId): Promise<UserWord> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/words/${wordId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userWordBody),
+      });
+      const updateUserWordResponse: UserWord = await response.json();
+
+      return updateUserWordResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async deleteUserWord(wordId: string, userId: string = this.userCurrentState.userId): Promise<void> {
+    this.loader = true;
+    try {
+      await fetch(`${this.userUrl}/${userId}/words/${wordId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+        },
+      });
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async getUserAggregatedWords(userId: string = this.userCurrentState.userId): Promise<Array<Word>> {
+    this.loader = true;
+    try {
+      const group = this.userCurrentState.aggregatedWords.group ? `&group=${this.userCurrentState.aggregatedWords.group}` : '';
+
+      const page = this.userCurrentState.aggregatedWords.page ? `&page=${this.userCurrentState.aggregatedWords.page}` : '';
+      const wordsPerPage = this.userCurrentState.aggregatedWords.wordsPerPage
+        ? `&wordsPerPage=${this.userCurrentState.aggregatedWords.wordsPerPage}`
+        : '';
+      const filters = this.userCurrentState.aggregatedWords.filter ? `&filter=${this.userCurrentState.aggregatedWords.filter}` : '';
+
+      const response = await fetch(`${this.userUrl}/${userId}/aggregatedWords?${group}${page}${wordsPerPage}${filters}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const getUserAggrWordsResponse: Array<Word> = await response.json();
+
+      setStorage(this.userCurrentState);
+      return getUserAggrWordsResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async getUserAggregatedWord(wordId: string, userId: string = this.userCurrentState.userId): Promise<UserWord> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/aggregatedWords/${wordId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const getUserAggrWordResponse = await response.json();
+
+      return getUserAggrWordResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async setUserStatistics(statisticsBody: Statistics, userId: string = this.userCurrentState.userId): Promise<Statistics> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/statistics`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(statisticsBody),
+      });
+      const updatedUserStatistics: Statistics = await response.json();
+      return updatedUserStatistics;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async getUserStatistics(userId: string = this.userCurrentState.userId): Promise<Statistics> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/statistics`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const userStatisticsResponse: Statistics = await response.json();
+
+      return userStatisticsResponse;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async setUserSettings(settingsBody: Settings, userId: string = this.userCurrentState.userId): Promise<Settings> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/settings`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(settingsBody),
+      });
+      const setUserSettings: Settings = await response.json();
+      return setUserSettings;
+    } catch (e) {
+      throw new Error(errorMessange);
+    } finally {
+      this.loader = false;
+    }
+  }
+
+  async getUserSettings(userId: string = this.userCurrentState.userId): Promise<Settings> {
+    this.loader = true;
+    try {
+      const response = await fetch(`${this.userUrl}/${userId}/settings`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${this.userCurrentState.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const userSettingsResponse: Settings = await response.json();
+
+      return userSettingsResponse;
     } catch (e) {
       throw new Error(errorMessange);
     } finally {
@@ -174,11 +416,11 @@ class ApiResource {
   }
 
   get userState(): UserState {
-    return this._userState;
+    return this.userCurrentState;
   }
 
-  set userState(newUserState: UserState) {
-    this._userState = newUserState;
+  set userState(newuserCurrentState: UserState) {
+    this.userCurrentState = newuserCurrentState;
   }
 }
 

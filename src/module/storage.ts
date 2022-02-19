@@ -8,10 +8,22 @@ export function getStorage() {
   if (userStateStorage) {
     return JSON.parse(userStateStorage);
   }
+  return {
+    page: 0,
+    group: 1,
+    userId: '',
+    name: '',
+    token: '',
+    refreshToken: '',
+    aggregatedWords: {
+      page: 0,
+      group: 1,
+      wordsPerPage: 6,
+      filter: '{"$or":[{"userWord.difficulty":"easy"},{"userWord":null}]}',
+    },
+  };
 }
 
 export function setStorage(itemUserState: UserState) {
-  console.log(itemUserState);
-
   localStorage.setItem(KeyName, JSON.stringify(itemUserState));
 }
