@@ -1,7 +1,3 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/export */
-/* eslint-disable no-console */
 import Page from '../../components/Page';
 import './textbook.scss';
 import BookCard from '../../components/BookCard/bookCard';
@@ -13,9 +9,8 @@ import sectionInput from '../../components/Select/inputs2';
 class TextbookPage extends Page {
   static component = {
     textbookTitle: `
-      <div class="textbook-container"> 
-        <div class="search-panel">
-        </div>       
+      <div class="textbook-container">        
+        <p class="textbook-title">textbook page</p>
       </div>`,
   };
 
@@ -71,25 +66,11 @@ class TextbookPage extends Page {
       cardArr.forEach((el) => {
         cardContainer.append(el.render());
       });
-      this.container.append(cardContainer);
-    });
+    this.container.append(cardContainer);
+  });
 
-    return this.container;
-  } // возвращает конт
+  return this.container;
+  }
 }
-
-TextbookPage.inputPage.addEventListener('change', () => {
-  TextbookPage.bookPage = +TextbookPage.inputPage.value - 1;
-  localStorage.removeItem('bookPage');
-  localStorage.bookPage = TextbookPage.bookPage;
-  TextbookPage.changeArr();
-});
-
-TextbookPage.inputCategory.addEventListener('change', () => {
-  TextbookPage.bookSection = +TextbookPage.inputCategory.value - 1;
-  localStorage.removeItem('categoryPage');
-  localStorage.categoryPage = TextbookPage.bookSection;
-  TextbookPage.changeArr();
-});
 
 export default TextbookPage;
