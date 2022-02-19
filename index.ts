@@ -1,4 +1,4 @@
-// import ApiResource from './src/module/api';
+import ApiResource from './src/module/api';
 import App from './src/module/app';
 import { getStorage } from './src/module/storage';
 
@@ -35,5 +35,3 @@ apiResource.getWords();
 //   email: 'stridfghdhong@rss.com',
 //   password: 'string12ggggg3456',
 // });
-
-// apiResource.deleteUser();
