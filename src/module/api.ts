@@ -184,4 +184,3 @@ class ApiResource {
 
 const apiResource = new ApiResource();
 export default apiResource;
-

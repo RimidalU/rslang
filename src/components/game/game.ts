@@ -1,5 +1,6 @@
-import ApiResource from '../../module/api';
+import apiResource from '../../module/api';
 import { Word } from '../../module/apiInterface';
+// eslint-disable-next-line import/no-cycle
 import { getRandomNumber } from '../../utils/utils';
 
 export default abstract class Game {
@@ -71,7 +72,6 @@ export default abstract class Game {
 
     const randomPage = getRandomNumber(0, 29);
 
-    const apiResource = new ApiResource();
     const wordsForGame = await apiResource.getWords(randomPage, level);
 
     for (let i = 0; i < count; i++) {
