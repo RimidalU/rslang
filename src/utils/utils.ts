@@ -14,7 +14,10 @@ export function createSoundReproductionBtn(path: string): HTMLElement {
 
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('sound__btn');
-  buttonElement.innerHTML = 'воспроизведение звука';
+
+  const imgForBtn = document.createElement('img');
+  imgForBtn.classList.add('sound__img');
+  imgForBtn.src = './assets/svg/volume.svg';
 
   const audioElement = document.createElement('audio');
   audioElement.setAttribute('src', `https://rs-lang-react.herokuapp.com/${path}`);
@@ -23,6 +26,7 @@ export function createSoundReproductionBtn(path: string): HTMLElement {
     audioElement.play();
   });
 
+  buttonElement.append(imgForBtn);
   wrapperForSoundBtn.append(buttonElement);
   wrapperForSoundBtn.append(audioElement);
 

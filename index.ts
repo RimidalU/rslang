@@ -1,4 +1,5 @@
 // import ApiResource from './src/module/api';
+import ApiResource from './src/module/api';
 import App from './src/module/app';
 import { getStorage } from './src/module/storage';
 

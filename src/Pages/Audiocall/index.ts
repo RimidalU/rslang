@@ -1,6 +1,6 @@
+import AudioCallGame from '../../components/Game/audiocallgame';
 import Page from '../../components/Page';
 import './audiocall.scss';
-import AudioCallGame from '../../components/game/audiocallgame';
 
 class AudiocallPage extends Page {
   static component = {
@@ -18,7 +18,7 @@ class AudiocallPage extends Page {
     gameContainer.classList.add('audiocall-container');
     const game = new AudioCallGame(
       'Аудивызов',
-      `Проверьте свой навык восприятия слов на слух. Выберите правильный вариант слова, которое услышали. 
+      `Проверьте свой навык восприятия слов на слух. Выберите правильный вариант слова, которое услышали. <br> 
       Помните, что у Вас только одна попытка!`,
     );
     gameContainer.append(game.renderGame());

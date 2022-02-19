@@ -66,13 +66,17 @@ export default class AudioCallGame extends Game {
           const index = Number(localStorage.getItem('correctWordIndex'));
           const correctImgPath = this.listOfWords[index].image;
 
+          const wrongBtn = document.querySelectorAll('[isCorrect="false"]');
+          wrongBtn.forEach((e) => e.classList.add('darkened'));
+
           if (answer === 'true') {
             button.classList.add('correct');
-            console.log('пометить слово как угаданное');
             wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
-          } else {
+          } else if (answer === 'false') {
             button.classList.add('incorrect');
-            console.log('пометить слово как не угаданное');
+
+            const correctBtn = document.querySelector('[isCorrect="true"]') as HTMLElement;
+            correctBtn.classList.add('correct');
             wrapperForAnswer.insertAdjacentElement('beforebegin', getCorrectImg(correctImgPath));
           }
 
@@ -94,28 +98,29 @@ export default class AudioCallGame extends Game {
 
   startGameBtn(): HTMLElement {
     const startGameBtnContainer = document.createElement('div');
-    startGameBtnContainer.classList.add('start-game__container');
+    startGameBtnContainer.classList.add('game__start-game');
 
     const startBtn = document.createElement('button');
-    startBtn.classList.add('start-game__btn');
-    startBtn.innerText = 'Начать игру';
+    startBtn.classList.add('game__start-btn');
+    startBtn.innerHTML = '<span data-title="ПОЕХАЛИ!">Начать игру</span>';
     startGameBtnContainer.append(startBtn);
 
     startBtn.addEventListener('click', async () => {
       const choisedLevel = localStorage.getItem('levelForAudioCallGame');
       const gameWrapper = document.querySelector('.game') as HTMLElement;
+      const warningText = document.createElement('p');
+      warningText.classList.add('game__warning-text');
+      warningText.innerText = 'Выберите уровень!';
+      const warningTextObjects = document.querySelectorAll('.game__warning-text');
+      warningTextObjects.forEach((e) => e.remove());
 
       if (!choisedLevel) {
-        const warningText = document.createElement('p');
-        warningText.classList.add('start-game__warning-text');
-        warningText.innerText = 'Выберите уровень!';
         startGameBtnContainer.append(warningText);
 
         setTimeout(() => {
           warningText.remove();
         }, 2000);
       } else {
-        console.log('Уровень выбран');
         const levelString = localStorage.getItem('levelForAudioCallGame');
         const level: number = levelString ? +levelString : -1;
         this.listOfWords = await this.getListOfWords(level);
@@ -141,10 +146,10 @@ export default class AudioCallGame extends Game {
     nextWordBtn.addEventListener('click', () => {
       const gameWrapper = document.querySelector('.game') as HTMLElement;
       gameWrapper.innerHTML = '';
+      ++this.correctWordNumber;
       gameWrapper.append(this.getButtonsForAnswer());
 
       if (this.correctWordNumber !== 19) {
-        this.correctWordNumber++;
         gameWrapper.append(nextWordBtn);
       }
 

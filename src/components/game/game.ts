@@ -30,6 +30,7 @@ export default abstract class Game {
     return wrapperStartGame;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   creteLevelBtns(): HTMLElement {
     const wrapper = document.createElement('div');
     wrapper.classList.add('game__level-container');
@@ -48,13 +49,20 @@ export default abstract class Game {
       containerForBtns.append(levelBtn);
 
       levelBtn.addEventListener('click', () => {
+        const levelBtns = document.querySelectorAll('.level__btn');
+
+        levelBtns.forEach((e) => {
+          e.classList.remove('active-level');
+        });
         localStorage.setItem('levelForAudioCallGame', `${i}`);
+        levelBtn.classList.add('active-level');
       });
     }
     wrapper.append(containerForBtns);
     return wrapper;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async getListOfWords(level: number, count = 20): Promise<Word[]> {
     // if (checkPage()) {
     //  console.log('Действие которое формирует список слов, если игра стартует со страницы учебника');
