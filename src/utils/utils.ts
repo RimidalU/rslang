@@ -1,3 +1,7 @@
+// eslint-disable-next-line import/no-cycle
+import { IWordGame } from '../components/Game/audiocallgame';
+import { Word } from '../module/apiInterface';
+
 export function getRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -47,4 +51,17 @@ export function getCorrectImg(path: string): HTMLElement {
   imgContainer.append(img);
 
   return imgContainer;
+}
+
+export function getAnswersArray(
+  listOfWords: Word[],
+  resulGameListOfWords: IWordGame[],
+  correctAnswer: string,
+  answer: string,
+): IWordGame[] {
+  const index: number = listOfWords.findIndex((e) => e.wordTranslate === correctAnswer);
+  const answerWord: IWordGame = listOfWords[index];
+  answerWord.result = answerWord.wordTranslate === answer;
+  resulGameListOfWords.push(answerWord);
+  return resulGameListOfWords;
 }
