@@ -1,0 +1,5 @@
+body {
+    display: flex;
+    min-height: 94vh;
+    flex-direction: column;
+}
