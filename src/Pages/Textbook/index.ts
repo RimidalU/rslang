@@ -73,4 +73,18 @@ class TextbookPage extends Page {
   }
 }
 
+TextbookPage.inputPage.addEventListener('input', () => {
+  TextbookPage.bookPage = +TextbookPage.inputPage.value - 1;
+  localStorage.removeItem('bookPage');
+  localStorage.bookPage = TextbookPage.bookPage;
+  TextbookPage.changeArr();
+});
+
+TextbookPage.inputCategory.addEventListener('input', () => {
+  TextbookPage.bookSection = +TextbookPage.inputCategory.value - 1;
+  localStorage.removeItem('categoryPage');
+  localStorage.categoryPage = TextbookPage.bookSection;
+  TextbookPage.changeArr();
+});
+
 export default TextbookPage;
