@@ -182,5 +182,4 @@ class ApiResource {
   }
 }
 
-const newApi = new ApiResource();
-export default newApi;
+export default ApiResource;
