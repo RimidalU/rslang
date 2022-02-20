@@ -17,3 +17,12 @@ a{
   color: black;
 }
 }
+@media(max-width: 430px) {
+  .footer__wrap {
+    .footer__cont {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
