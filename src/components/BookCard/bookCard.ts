@@ -1,6 +1,10 @@
 import BaseComponent from '../BaseComponent/baseComponent';
 
 class BookCard extends BaseComponent {
+  private bookCardInner: HTMLDivElement = document.createElement('div');
+
+  private bookCardBack: HTMLDivElement = document.createElement('div');
+
   private word: string;
 
   private textMeaning: string;
@@ -40,38 +44,47 @@ class BookCard extends BaseComponent {
     this.backgroundURL = backgroundURL;
   }
 
-  createDescription() {
+  createInnerView() {
+    this.bookCardInner.classList.add('book-card-inner');
+    const bookCardFront: HTMLDivElement = document.createElement('div');
+    bookCardFront.classList.add('book-card-front');
     const wordHeader: HTMLHeadElement = document.createElement('h3');
     wordHeader.textContent = this.word;
-    wordHeader.style.background = 'black';
-    const description = document.createElement('div');
-    description.prepend(wordHeader);
-    description.classList.add('book-description');
-    const temp: string[] = [
-      this.textMeaning,
-      this.textExample,
-      this.transcription,
-      this.wordTranslate,
-      this.textMeaningTranslate,
-      this.textExampleTranslate,
-    ];
+    wordHeader.classList.add('front-text');
+    const trans: HTMLParagraphElement = document.createElement('p');
+    trans.textContent = this.transcription;
+    trans.classList.add('front-text');
+    bookCardFront.prepend(wordHeader);
+    bookCardFront.append(trans);
+    this.bookCardInner.prepend(bookCardFront);
+    this.bookCardInner.style.background = `url("https://rslang-learn.herokuapp.com/${this.backgroundURL}") center/cover no-repeat`;
+    return this.bookCardInner;
+  }
+
+  createDescription() {
+    this.bookCardBack.classList.add('book-card-back');
+    const temp: string[] = [this.textMeaning, this.textExample, this.wordTranslate, this.textMeaningTranslate, this.textExampleTranslate];
     temp.forEach((el: string) => {
       const elString: HTMLParagraphElement = document.createElement('p');
-      elString.style.color = 'red';
+      elString.classList.add('desc-text');
+      if (el === this.textMeaning || el === this.textExample) {
+        elString.classList.add('en-text');
+      }
+      if (el === this.wordTranslate) {
+        elString.classList.add('translated');
+      }
       elString.style.background = 'transparent';
-      elString.style.filter = 'none';
       elString.insertAdjacentHTML('afterbegin', el);
-      description.append(elString);
+      this.bookCardBack.insertAdjacentElement('beforeend', elString);
     });
-    return description;
+    this.bookCardInner.append(this.bookCardBack);
+    return this.bookCardInner;
   }
 
   render() {
     this.container.innerHTML = '';
-    this.container.append();
+    this.container.prepend(this.createInnerView());
     this.container.append(this.createDescription());
-    this.container.style.background = `url("https://rslang-learn.herokuapp.com/${this.backgroundURL}") center/cover no-repeat`;
-    this.container.style.filter = 'grayscale(0.4)';
     return this.container;
   }
 }
