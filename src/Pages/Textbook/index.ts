@@ -41,7 +41,9 @@ class TextbookPage extends Page {
 
   render() {
     this.container.innerHTML = '';
-    this.container.style.background = 'radial-gradient(circle, rgba(221,244,255,1) 39%, rgba(255,113,113,1) 90%)';
+    localStorage.removeItem('wordsArray');
+    localStorage.wordsArray = TextbookPage.wordsArr;
+    this.container.style.background = '#96BB7C';
     const cardContainer = document.createElement('div');
     cardContainer.innerHTML = '';
     cardContainer.classList.add('card-container');
@@ -77,30 +79,30 @@ class TextbookPage extends Page {
       cardArr.forEach((el) => {
         cardContainer.append(el.render());
       });
-    this.container.append(cardContainer);
-  });
+      this.container.append(cardContainer);
+    });
 
-  TextbookPage.inputPage.addEventListener('change', () => {
-    if(+TextbookPage.inputPage.value >= 1 && +TextbookPage.inputPage.value <= 30){
-      TextbookPage.bookPage = +TextbookPage.inputPage.value - 1;
-      localStorage.removeItem('bookPage');
-      localStorage.bookPage = TextbookPage.bookPage;
-      TextbookPage.changeArr();
-      this.container.append(this.render());
-    }
-  })
+    TextbookPage.inputPage.addEventListener('change', () => {
+      if (+TextbookPage.inputPage.value >= 1 && +TextbookPage.inputPage.value <= 30) {
+        TextbookPage.bookPage = +TextbookPage.inputPage.value - 1;
+        localStorage.removeItem('bookPage');
+        localStorage.bookPage = TextbookPage.bookPage;
+        TextbookPage.changeArr();
+        this.container.append(this.render());
+      }
+    });
 
-  TextbookPage.inputCategory.addEventListener('change', () => {
-    if(+TextbookPage.inputCategory.value >= 1 && +TextbookPage.inputPage.value <= 6){
-      TextbookPage.bookSection = +TextbookPage.inputCategory.value - 1;
-      localStorage.removeItem('bookSection');
-      localStorage.bookSection = TextbookPage.bookSection;
-      TextbookPage.changeArr();
-      this.container.append(this.render());
-    }
-  })
+    TextbookPage.inputCategory.addEventListener('change', () => {
+      if (+TextbookPage.inputCategory.value >= 1 && +TextbookPage.inputPage.value <= 6) {
+        TextbookPage.bookSection = +TextbookPage.inputCategory.value - 1;
+        localStorage.removeItem('bookSection');
+        localStorage.bookSection = TextbookPage.bookSection;
+        TextbookPage.changeArr();
+        this.container.append(this.render());
+      }
+    });
 
-  return this.container;
+    return this.container;
   }
 }
 
