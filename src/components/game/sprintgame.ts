@@ -1,5 +1,5 @@
 import { Word } from '../../module/apiInterface';
-import { checkPage, getAnswersArray, getRandomNumber } from '../../utils/utils';
+import { checkPage, createSoundReproductionBtn, getAnswersArray, getRandomNumber } from '../../utils/utils';
 import { IWordGame } from './audiocallgame';
 import Game from './game';
 
@@ -33,6 +33,7 @@ export default class SprintGame extends Game {
     translatehWordElem.classList.add('word-translate__translate');
 
     const englishWord = this.listOfWords[this.correctWordNumber];
+
     englishWordElem.innerHTML = englishWord.word;
 
     const randomTranslate = getRandomNumber(0, 1);
@@ -77,37 +78,48 @@ export default class SprintGame extends Game {
       } else {
         btn.innerHTML = 'Неверно';
         btn.classList.add('incorrect');
-        //usedVariantWordForBtn[word.id] = word;
       }
 
       btn.addEventListener('click', (event: Event) => {
         const button = event.currentTarget as HTMLElement;
+        const answer = button.getAttribute('isCorrect');
+
+        const audio = document.createElement('audio');
+        playField.append(audio);
 
         const wordTranslate = document.querySelector('.word-translate__translate') as HTMLElement;
 
-        if (wordTranslate.innerText === this.listOfWords[this.correctWordNumber].wordTranslate) {
+        const resultAfterClick = wordTranslate.innerText === this.listOfWords[this.correctWordNumber].wordTranslate;
+        if (resultAfterClick.toString() === answer) {
           this.resulGameListOfWords = getAnswersArray(
             this.listOfWords,
             this.resulGameListOfWords,
             correctWord.wordTranslate,
-            wordTranslate.innerText,
+            correctWord.wordTranslate,
           );
-          playField.remove();
-          console.log(this.resulGameListOfWords);
+
+          audio.src = './assets/sound/correct-sound.mp3';
+          console.log(audio);
         } else {
-          this.resulGameListOfWords = getAnswersArray(
-            this.listOfWords,
-            this.resulGameListOfWords,
-            correctWord.wordTranslate,
-            wordTranslate.innerText,
-          );
-          playField.remove();
-          console.log(this.resulGameListOfWords);
+          this.resulGameListOfWords = getAnswersArray(this.listOfWords, this.resulGameListOfWords, correctWord.wordTranslate, '');
+
+          audio.src = './assets/sound/incorrect-sound.mp3';
+          console.log(audio);
         }
         this.correctWordNumber++;
+        playField.remove();
 
         const gameWrapper = document.querySelector('.game') as HTMLElement;
-        gameWrapper.append(this.getButtonsForAnswer());
+        if (this.correctWordNumber !== this.listOfWords.length) {
+          gameWrapper.append(this.getButtonsForAnswer());
+        } else {
+          gameWrapper.append(this.gameResult());
+        }
+        audio.setAttribute('autoplay', '');
+
+        setTimeout(() => {
+          audio.play();
+        }, 200);
       });
 
       wrapperForAnswer.append(btn);
@@ -131,7 +143,6 @@ export default class SprintGame extends Game {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   startGameBtn(): HTMLElement {
     const startGameBtnContainer = document.createElement('div');
     startGameBtnContainer.classList.add('game__start-game');
@@ -157,10 +168,13 @@ export default class SprintGame extends Game {
           warningText.remove();
         }, 2000);
       } else {
+        startGameBtnContainer.innerHTML = `<div class="load">
+        <hr/><hr/><hr/><hr/>
+      </div>`;
         const levelString = localStorage.getItem('levelForAudioCallGame');
         const level: number = levelString ? +levelString : -1;
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
           // eslint-disable-next-line no-await-in-loop
           const wordFromApi = await this.getListOfWords(level);
           if (!this.listOfWords.some((e) => e.page === wordFromApi[0].page)) {
@@ -173,9 +187,25 @@ export default class SprintGame extends Game {
         console.log(this.listOfWords);
 
         gameWrapper.innerHTML = '';
-        gameWrapper.append(this.getButtonsForAnswer());
 
-        document.querySelector('audio')?.play();
+        const timer = document.createElement('div');
+        timer.classList.add('timer');
+        let counter = 60;
+        timer.innerText = `${counter}`;
+
+        const timerFunction = setInterval(() => {
+          counter--;
+          timer.innerText = `${counter}`;
+          gameWrapper.prepend(timer);
+
+          if (counter === 0) {
+            gameWrapper.innerHTML = '';
+            clearInterval(timerFunction);
+            gameWrapper.append(this.gameResult());
+          }
+        }, 1000);
+
+        gameWrapper.append(timer, this.getButtonsForAnswer());
       }
     });
 
@@ -202,8 +232,51 @@ export default class SprintGame extends Game {
     return gameWrapper;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   gameResult(): HTMLElement {
-    console.log('что-то');
+    const gameResultContainer = document.createElement('div');
+    gameResultContainer.classList.add('game-result');
+    const header = document.createElement('h2');
+    header.innerText = `Результаты игры:
+    Количество слов участвовавших в игре: ${this.resulGameListOfWords.length}`;
+
+    const correctContainer = document.createElement('div');
+    correctContainer.classList.add('game-result__container');
+    correctContainer.innerHTML = '<h3>Выбрано верно:</h3>';
+    const wordsResultArr = this.resulGameListOfWords;
+
+    const incorrectContainer = document.createElement('div');
+    incorrectContainer.classList.add('game-result__container');
+    incorrectContainer.innerHTML = '<h3>Выбрано неверно:</h3>';
+
+    wordsResultArr.forEach((e): void => {
+      let sound: HTMLElement;
+      const infoContainer = document.createElement('div');
+      infoContainer.classList.add('result');
+      const wordContainer = document.createElement('p');
+      const transcriptionContainer = document.createElement('p');
+      const wordTranslateContainer = document.createElement('p');
+
+      if (e.result === true) {
+        wordContainer.innerText = e.word;
+        transcriptionContainer.innerText = e.transcription;
+        wordTranslateContainer.innerText = e.wordTranslate;
+        sound = createSoundReproductionBtn(e.audio);
+        sound.classList.add('result__sound');
+        infoContainer.append(wordContainer, transcriptionContainer, wordTranslateContainer, sound);
+        correctContainer.append(infoContainer);
+      } else {
+        wordContainer.innerText = e.word;
+        transcriptionContainer.innerText = e.transcription;
+        wordTranslateContainer.innerText = e.wordTranslate;
+        sound = createSoundReproductionBtn(e.audio);
+        sound.classList.add('result-sound');
+        infoContainer.append(wordContainer, transcriptionContainer, wordTranslateContainer, sound);
+        incorrectContainer.append(infoContainer);
+      }
+    });
+
+    gameResultContainer.append(header, correctContainer, incorrectContainer);
+
+    return gameResultContainer;
   }
 }
