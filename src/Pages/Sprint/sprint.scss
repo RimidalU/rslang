@@ -9,10 +9,83 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  height: 70vh;
+  height: 90vh;
+  background: #eff8ed;
 }
 
 p {
   text-transform: uppercase;
   font-size: 30px;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.play-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 520px;
+  min-height: 410px;
+  position: relative;
+}
+
+.word-translate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p {
+    text-align: center;
+  }
+
+  &__word {
+    font-size: 40px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  &__translate {
+    font-size: 30px;
+    //text-transform: uppercase;
+    //font-weight: bold;
+  }
+}
+
+.answers-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .answer-btn {
+    transition: none;
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &:hover {
+      border-color: currentColor;
+      background-color: white;
+    }
+  }
+
+  .correct {
+    background-color: #008000;
+
+    &:hover {
+      color: #008000;
+    }
+  }
+
+  .incorrect {
+    background-color: #ff0000;
+
+    &:hover {
+      color: #ff0000;
+    }
+  }
 }
