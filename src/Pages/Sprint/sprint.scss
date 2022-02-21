@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sprint-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  height: 90vh;
+  background: #eff8ed;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #ebebeb;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #da587f;
+  }
+
+  .game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .play-field {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 520px;
+      min-height: 300px;
+      position: relative;
+    }
+  }
+}
+
+p {
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+.word-translate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p {
+    text-align: center;
+  }
+
+  &__word {
+    font-size: 40px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  &__translate {
+    font-size: 30px;
+    //text-transform: uppercase;
+    //font-weight: bold;
+  }
+}
+
+.answers-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  .answer-btn {
+    transition: none;
+
+    &:active {
+      transform: translateY(1px);
+    }
+
+    &:hover {
+      border-color: currentColor;
+      background-color: white;
+    }
+  }
+
+  .correct {
+    background-color: #008000;
+
+    &:hover {
+      color: #008000;
+    }
+  }
+
+  .incorrect {
+    background-color: #ff0000;
+
+    &:hover {
+      color: #ff0000;
+    }
+  }
+}
+
+.timer {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  font-size: 40px;
+  font-weight: bold;
+  border: #da587f 5px solid;
+}
+
+.load {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /*change these sizes to fit into your project*/
+  width: 100px;
+  height: 100px;
+
+  hr {
+    border: 0;
+    margin: 0;
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    border-radius: 50%;
+    animation: spin 2s ease infinite;
+  }
+  & :first-child {
+    background: #19a68c;
+    animation-delay: -1.5s;
+  }
+  & :nth-child(2) {
+    background: #f63d3a;
+    animation-delay: -1s;
+  }
+  & :nth-child(3) {
+    background: #fda543;
+    animation-delay: -0.5s;
+  }
+  & :last-child {
+    background: #193b48;
+  }
+
+  @keyframes spin {
+    0%,
+    100% {
+      transform: translate(0);
+    }
+    25% {
+      transform: translate(160%);
+    }
+    50% {
+      transform: translate(160%, 160%);
+    }
+    75% {
+      transform: translate(0, 160%);
+    }
+  }
+}
