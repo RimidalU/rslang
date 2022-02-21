@@ -25,26 +25,25 @@
     border-radius: 5px;
     background: #da587f;
   }
+
+  .game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .play-field {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 520px;
+      min-height: 300px;
+      position: relative;
+    }
+  }
 }
 
 p {
   text-transform: uppercase;
   font-size: 30px;
-}
-
-.game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.play-field {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 520px;
-  min-height: 300px;
-  position: relative;
 }
 
 .word-translate {

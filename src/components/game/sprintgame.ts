@@ -1,7 +1,7 @@
 import { Word } from '../../module/apiInterface';
 import { checkPage, createSoundReproductionBtn, getAnswersArray, getRandomNumber } from '../../utils/utils';
-import { IWordGame } from './audiocallgame';
 import Game from './game';
+import { IWordGame } from './interface-game';
 
 export default class SprintGame extends Game {
   listOfWords: Word[];
@@ -19,7 +19,7 @@ export default class SprintGame extends Game {
 
   // eslint-disable-next-line class-methods-use-this
   initLocalStorage(): void {
-    localStorage.setItem('levelForAudioCallGame', '');
+    localStorage.setItem('levelForGame', '');
     localStorage.setItem('correctWordIndex', '');
   }
 
@@ -99,12 +99,10 @@ export default class SprintGame extends Game {
           );
 
           audio.src = './assets/sound/correct-sound.mp3';
-          console.log(audio);
         } else {
           this.resulGameListOfWords = getAnswersArray(this.listOfWords, this.resulGameListOfWords, correctWord.wordTranslate, '');
 
           audio.src = './assets/sound/incorrect-sound.mp3';
-          console.log(audio);
         }
         this.correctWordNumber++;
         playField.remove();
@@ -153,7 +151,7 @@ export default class SprintGame extends Game {
     startGameBtnContainer.append(startBtn);
 
     startBtn.addEventListener('click', async () => {
-      const choisedLevel = localStorage.getItem('levelForAudioCallGame');
+      const choisedLevel = localStorage.getItem('levelForGame');
       const gameWrapper = document.querySelector('.game') as HTMLElement;
       const warningText = document.createElement('p');
       warningText.classList.add('game__warning-text');
@@ -171,7 +169,7 @@ export default class SprintGame extends Game {
         startGameBtnContainer.innerHTML = `<div class="load">
         <hr/><hr/><hr/><hr/>
       </div>`;
-        const levelString = localStorage.getItem('levelForAudioCallGame');
+        const levelString = localStorage.getItem('levelForGame');
         const level: number = levelString ? +levelString : -1;
 
         for (let i = 0; i < 10; i++) {
@@ -183,8 +181,6 @@ export default class SprintGame extends Game {
             i--;
           }
         }
-
-        console.log(this.listOfWords);
 
         gameWrapper.innerHTML = '';
 
