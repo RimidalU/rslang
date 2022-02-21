@@ -19,13 +19,11 @@ apiResource.getWords();
 //   email: 'stri7gr44@rss.com',
 //   password: 'ster4r423456',
 // });
-
 // apiResource.signInUser({
 //   name: '74rrr2y',
 //   email: 'stri7gr44@rss.com',
 //   password: 'ster4r423456',
 // });
-
 // apiResource.getUser();
 
 // apiResource.updateUser({

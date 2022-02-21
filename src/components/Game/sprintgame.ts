@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Word } from '../../module/apiInterface';
 import { checkPage, createSoundReproductionBtn, getAnswersArray, getRandomNumber } from '../../utils/utils';
 import Game from './game';

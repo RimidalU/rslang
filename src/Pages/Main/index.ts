@@ -1,6 +1,15 @@
+/* eslint-disable func-names */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable no-alert */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
+/* eslint-disable prettier/prettier */
+/* eslint-disable object-shorthand */
 /* eslint-disable max-len */
 import Page from '../../components/Page';
 import './main.scss';
+import apiResource from '../../module/api';
 
 class MainPage extends Page {
   static component = {
@@ -11,7 +20,7 @@ class MainPage extends Page {
           <div class="description-form">
               <h1 class="description-text">RS Lang</h1>
               <p class="description-text">Изучи коллекцию из 4000 слов в различных форматах.</p>
-              <button class="button register-btn">
+              <button class="button register-btn" onclick="document.querySelector('.modal').classList.toggle('d-none')">
               Попробовать                    
           </button>
           </div>
@@ -49,6 +58,9 @@ class MainPage extends Page {
           </div>           
       </div>  
   </main>
+  <button class="button register-btn second-btn d-none" onclick="document.querySelector('.modal').classList.toggle('d-none')">
+              Попробовать                    
+          </button>
   <div class="services" id="services">
       <h3 class="team-header">Проект предлагает вам: </h3>
       <div class="service-container">
@@ -102,17 +114,17 @@ class MainPage extends Page {
       <h3 class="team-header">Над проектом работали: </h3>
       <div class="team-container">
           <div class="member-card">
-              <img class="member-avatar" src="../assets/jpg/member-avatar-1.jpg" alt="Lead avatar">
+              <img class="member-avatar" src="../assets/jpg/lead.jpg" alt="Lead avatar">
               <h4 class="member-header">Владимир</h4>
               <p class="member-text">Lead разработчик</p>
               <ul class="members-list">
                   <li class="members-item">Распределение задач</li>
                   <li class="members-item">Работа с REST API</li>
-                  <li class="members-item">Разработка мини-игры</li>
+                  <li class="members-item">Помощь в разработке мини-игры</li>
               </ul>
           </div>
           <div class="member-card">
-              <img class="member-avatar" src="../assets/jpg/member-avatar-1.jpg" alt="Lead avatar">
+              <img class="member-avatar" src="../assets/jpg/Aynur.jpeg" alt="Lead avatar">
               <h4 class="member-header">Айнур</h4>
               <p class="member-text">Ментор</p>
               <ul class="members-list">
@@ -122,26 +134,42 @@ class MainPage extends Page {
               </ul>
           </div>
           <div class="member-card">
-              <img class="member-avatar" src="../assets/jpg/member-avatar-1.jpg" alt="Lead avatar">
+              <img class="member-avatar" src="../assets/jpg/Andrey.jpeg" alt="Lead avatar">
               <h4 class="member-header">Андрей</h4>
               <p class="member-text">Front-end разработчик</p>
               <ul class="members-list">
-                  <li class="members-item">Разработка мини-игры</li>
+                  <li class="members-item">Разработка мини-игр</li>
                   <li class="members-item">Проведение консультаций</li>
+                  <li class="members-item">Помощь в разработке дизайн-макета</li>
               </ul>
           </div>
           <div class="member-card">
-              <img class="member-avatar" src="../assets/jpg/member-avatar-1.jpg" alt="Lead avatar">
+              <img class="member-avatar" src="../assets/jpg/oleg.jpg" alt="Lead avatar">
               <h4 class="member-header">Андрей</h4>
               <p class="member-text">Front-end разработчик</p>
               <ul class="members-list">
-                  <li class="members-item">Разработка внешней оболочки</li>
+                  <li class="members-item">Разработка главной страницы и учебника</li>
                   <li class="members-item">Работа с REST API</li>
+                  <li class="members-item">Проведение консультаций</li>
               </ul>
           </div>
       </div>
       </div>
-      <a class="back-to-top" href="#header" title="Наверх">&uarr;</a>
+      <a class="back-to-top" title="Наверх">&uarr;</a>
+      <div class="modal register-modal d-none">
+        <div class="modal-content">
+            <span class="close register-close" onclick="document.querySelector('.modal').classList.toggle('d-none')">&times;</span>
+            <form class="form" id="register-form" name="reg">
+                <p>Имя</p>
+                <input type="text" id="register-name" placeholder="Имя" name="name" required>
+                <p>Email</p>
+                <input type="email" id="register-mail" placeholder="Почта" name="email" required>
+                <p>Пароль</p>
+                <input type="password" id="register-password" placeholder="Пароль" name="password" required>
+                <button id="reg" class="register-btn">Pегистрация</button>
+            </form>
+        </div>
+    </div>
       </div>    
       `,
   };
@@ -152,5 +180,25 @@ class MainPage extends Page {
     return this.container;
   }
 }
-
+document.getElementById('reg')?.addEventListener('click', async () => {
+    if(!localStorage.getItem('userState') ){
+        apiResource.createUser({
+            name: 'aleeeeeeeeg',
+            email: 'strisdadads44@rss.com',
+            password: 'steweweqeqweqw',
+          });
+    }
+    else {
+        apiResource.createUser({
+            name: 'aleeeeeeeeg',
+            email: 'strisdadads44@rss.com',
+            password: 'steweweqeqweqw',
+          });
+          apiResource.signInUser({
+          name: 'aleeeeeeeeg',
+          email: 'strisdadads44@rss.com',
+          password: 'steweweqeqweqw',
+          });
+    }
+});
 export default MainPage;

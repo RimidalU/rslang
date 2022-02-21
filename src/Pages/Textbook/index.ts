@@ -15,7 +15,7 @@ class TextbookPage extends Page {
       </div>`,
   };
 
-  public pageInput = document.querySelector('.page-input');
+  private cardContainer = document.createElement('div');
 
   static bookPage = localStorage.bookPage ? localStorage.bookPage : 0;
 
@@ -41,23 +41,24 @@ class TextbookPage extends Page {
 
   render() {
     this.container.innerHTML = '';
+    this.container.lastChild?.remove();
     localStorage.removeItem('wordsArray');
-    localStorage.wordsArray = TextbookPage.wordsArr;
     this.container.style.background = '#96BB7C';
-    const cardContainer = document.createElement('div');
-    cardContainer.innerHTML = '';
-    cardContainer.classList.add('card-container');
     this.container.innerHTML += TextbookPage.component.textbookTitle;
     const pageInfo = document.createElement('p');
     pageInfo.textContent = `Страница ${+TextbookPage.bookPage + 1}`;
+    pageInfo.style.padding = '10px';
     const sectionInfo = document.createElement('p');
     sectionInfo.textContent = `Раздел ${+TextbookPage.bookSection + 1}`;
+    sectionInfo.style.padding = '10px';
     this.container.prepend(TextbookPage.inputPage);
     this.container.prepend(TextbookPage.inputCategory);
     this.container.prepend(sectionInfo);
     this.container.prepend(pageInfo);
     this.container.append(TextbookPage.audiocallLink);
     this.container.append(TextbookPage.sprintgameLink);
+    this.cardContainer.innerHTML = '';
+    this.cardContainer.classList.add('card-container');
     const cardArr: Array<BookCard> = [];
     TextbookPage.wordsArr.then((data: Array<Word>) => {
       data.forEach((el: Word) => {
@@ -76,10 +77,12 @@ class TextbookPage extends Page {
           ),
         );
       });
+      localStorage.wordsArr = JSON.stringify(data);
+      this.cardContainer.innerHTML = '';
       cardArr.forEach((el) => {
-        cardContainer.append(el.render());
+        this.cardContainer.append(el.render());
       });
-      this.container.append(cardContainer);
+      this.container.append(this.cardContainer);
     });
 
     TextbookPage.inputPage.addEventListener('change', () => {
@@ -88,17 +91,18 @@ class TextbookPage extends Page {
         localStorage.removeItem('bookPage');
         localStorage.bookPage = TextbookPage.bookPage;
         TextbookPage.changeArr();
-        this.container.append(this.render());
+        this.container = this.render();
       }
     });
 
     TextbookPage.inputCategory.addEventListener('change', () => {
-      if (+TextbookPage.inputCategory.value >= 1 && +TextbookPage.inputPage.value <= 6) {
+      if (+TextbookPage.inputCategory.value >= 1 && +TextbookPage.inputCategory.value <= 6) {
         TextbookPage.bookSection = +TextbookPage.inputCategory.value - 1;
         localStorage.removeItem('bookSection');
         localStorage.bookSection = TextbookPage.bookSection;
         TextbookPage.changeArr();
-        this.container.append(this.render());
+        this.container.innerHTML = '';
+        this.container = this.render();
       }
     });
 

@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
 import { getStorage } from '../../module/storage';
 import './userCard.scss';
 
 class UserCard {
   name: string | undefined;
+
   password: string | undefined;
+
   email: string | undefined;
 
   constructor() {
@@ -11,8 +14,10 @@ class UserCard {
     this.password = 'Введите пароль';
     this.email = 'Введите email';
   }
+
   static nameInput = document.getElementById('name');
 
+  // eslint-disable-next-line class-methods-use-this
   updateUser() {
     // let er = UserCard.nameInput!;
     console.log('er');
@@ -25,12 +30,12 @@ class UserCard {
   }
 
   render() {
-    let userState = getStorage();
+    const userState = getStorage();
 
     this.name = userState.name;
     this.password = userState.password;
 
-    let userHtml = `
+    const userHtml = `
       <div class="stats-container"> 
         <div class="user-container">
             <div class="user-ico"></div>
