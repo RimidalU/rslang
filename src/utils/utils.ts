@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { IWordGame } from '../components/Game/audiocallgame';
+import { IWordGame } from '../components/Game/interface-game';
 import { Word } from '../module/apiInterface';
 
 export function getRandomNumber(min: number, max: number) {

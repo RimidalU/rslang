@@ -15,14 +15,14 @@ apiResource.getWords();
 // apiResource.getWord('5e9f5ee35eb9e72bc21af7de');
 
 // apiResource.createUser({
-//  name: 'aleeeeeeeeg',
-//  email: 'strisdadads44@rss.com',
-//  password: 'steweweqeqweqw',
+//   name: '74rr2y',
+//   email: 'stri7gr44@rss.com',
+//   password: 'ster4r423456',
 // });
 // apiResource.signInUser({
-//  name: 'aleeeeeeeeg',
-//  email: 'strisdadads44@rss.com',
-//  password: 'steweweqeqweqw',
+//   name: '74rrr2y',
+//   email: 'stri7gr44@rss.com',
+//   password: 'ster4r423456',
 // });
 // apiResource.getUser();
 

@@ -55,7 +55,7 @@ export default abstract class Game {
         levelBtns.forEach((e) => {
           e.classList.remove('active-level');
         });
-        localStorage.setItem('levelForAudioCallGame', `${i}`);
+        localStorage.setItem('levelForGame', `${i}`);
         levelBtn.classList.add('active-level');
       });
     }
