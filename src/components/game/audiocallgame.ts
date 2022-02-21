@@ -4,10 +4,7 @@ import { Word } from '../../module/apiInterface';
 import { checkPage, createSoundReproductionBtn, getAnswersArray, getCorrectImg, getRandomNumber } from '../../utils/utils';
 // eslint-disable-next-line import/no-cycle
 import Game from './game';
-
-export interface IWordGame extends Word {
-  result: boolean;
-}
+import { IWordGame } from './interface-game';
 
 export default class AudioCallGame extends Game {
   listOfWords: Word[];
@@ -24,7 +21,7 @@ export default class AudioCallGame extends Game {
   }
 
   initLocalStorage(): void {
-    localStorage.setItem('levelForAudioCallGame', '');
+    localStorage.setItem('levelForGame', '');
     localStorage.setItem('correctWordIndex', '');
   }
 
@@ -129,7 +126,7 @@ export default class AudioCallGame extends Game {
     startGameBtnContainer.append(startBtn);
 
     startBtn.addEventListener('click', async () => {
-      const choisedLevel = localStorage.getItem('levelForAudioCallGame');
+      const choisedLevel = localStorage.getItem('levelForGame');
       const gameWrapper = document.querySelector('.game') as HTMLElement;
       const warningText = document.createElement('p');
       warningText.classList.add('game__warning-text');
@@ -144,7 +141,7 @@ export default class AudioCallGame extends Game {
           warningText.remove();
         }, 2000);
       } else {
-        const levelString = localStorage.getItem('levelForAudioCallGame');
+        const levelString = localStorage.getItem('levelForGame');
         const level: number = levelString ? +levelString : -1;
         this.listOfWords = await this.getListOfWords(level);
 
