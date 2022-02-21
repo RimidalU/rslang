@@ -1,0 +1,73 @@
+.user-container {
+  display: flex;
+  flex-direction: column;
+  background-color: aquamarine;
+  max-width: 700px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  gap: 10px;
+  border-radius: 5px;
+
+  .delete-user {
+    background-color: #da587f;
+  }
+
+  .user-ico {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    background-image: url(../../assets/jpg/lion.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .user-input {
+    text-align: center;
+  }
+
+  .user-name {
+    text-decoration: underline;
+    color: #da587f;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .user-input {
+    background-color: transparent;
+    // background-color: #cdda58;
+    width: 150px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+    border: transparent;
+  }
+}
+
+.table-head {
+  th {
+    background-color: #da587f;
+  }
+}
+
+th {
+  text-align: left;
+  padding: 5px 5px;
+  background: aquamarine;
+  border-radius: 5px;
+  margin-bottom: 2px;
+}
+
+th:nth-child(2) {
+  border-right: 2px solid;
+  text-align: center;
+  color: #da587f;
+  background: rgb(40, 252, 181);
+}
+
+.day-stat,
+.sprint-wrap,
+.call-wrap {
+  background: #d6efc4;
+  color: #252b42;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}

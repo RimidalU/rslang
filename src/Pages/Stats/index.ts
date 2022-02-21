@@ -1,17 +1,12 @@
 import Page from '../../components/Page';
+import userCardBlock from '../../components/UserCard/userCard';
 import './stats.scss';
 
 class StatsPage extends Page {
-  static component = {
-    statsTitle: `
-      <div class="stats-container">        
-        <p class="stats-title">stats page</p>
-      </div>`,
-  };
+  static input = userCardBlock.render();
 
   render() {
-    const title = this.createHeaderTitle(StatsPage.component.statsTitle);
-    this.container.append(title);
+    this.container.innerHTML = StatsPage.input;
     return this.container;
   }
 }

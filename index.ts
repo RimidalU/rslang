@@ -15,13 +15,13 @@ apiResource.getWords();
 // apiResource.getWord('5e9f5ee35eb9e72bc21af7de');
 
 // apiResource.createUser({
-//   name: '74rr44r2y',
+//   name: '74rr2y',
 //   email: 'stri7gr44@rss.com',
 //   password: 'ster4r423456',
 // });
 
 // apiResource.signInUser({
-//   name: '74rr44r2y',
+//   name: '74rrr2y',
 //   email: 'stri7gr44@rss.com',
 //   password: 'ster4r423456',
 // });
