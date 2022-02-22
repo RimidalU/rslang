@@ -288,3 +288,40 @@ button {
     }
   }
 }
+@media(max-width: 770px) {
+  .answers-wrapper{
+    display: grid !important;
+    grid-template-columns: 6fr 6fr;
+    justify-items: center;
+  }
+  .game-result{
+    width: 90vw;
+    font-size: 12px;
+  }
+}
+@media(max-width: 570px){
+  .game {
+    .play-field {
+      max-width: 400px;
+    }
+  }
+  .audiocall-container{
+    align-items: start;
+  }
+  .game-result{
+    max-width: 90vw;
+  }
+  .result{
+    justify-content: start;
+  }
+}
+@media(max-width: 430px){
+  .answers-wrapper{
+    grid-template-columns: 12fr;
+    justify-items: center;
+  }
+  .answer-btn{
+    width: 80vw;
+    height: 7vh;
+  }
+}

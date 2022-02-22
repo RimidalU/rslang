@@ -229,6 +229,17 @@ input[type=submit]{
 .back-to-top-show {
   display: block;
 }
+.user-avatar{
+  display: block;
+  background: #d42121;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  z-index: 299;
+}
 @media(max-width: 1200px){
   .description-text{
     font-size: 28px;

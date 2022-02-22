@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -10,7 +11,7 @@
 import Page from '../../components/Page';
 import './main.scss';
 import apiResource from '../../module/api';
-
+import userAvatar from '../../components/UserCard/userAvatar';
 class MainPage extends Page {
   static component = {
     mainTitle: `
@@ -166,7 +167,7 @@ class MainPage extends Page {
                 <input type="email" id="register-mail" placeholder="Почта" name="email" required>
                 <p>Пароль</p>
                 <input type="password" id="register-password" placeholder="Пароль" name="password" required>
-                <button id="reg" class="register-btn">Pегистрация</button>
+                <button id="reg" class="register-btn" onclick=${sign()}>Pегистрация</button>
             </form>
         </div>
     </div>
@@ -180,25 +181,18 @@ class MainPage extends Page {
     return this.container;
   }
 }
-document.getElementById('reg')?.addEventListener('click', async () => {
-    if(!localStorage.getItem('userState') ){
-        apiResource.createUser({
-            name: 'aleeeeeeeeg',
-            email: 'strisdadads44@rss.com',
-            password: 'steweweqeqweqw',
-          });
-    }
-    else {
-        apiResource.createUser({
-            name: 'aleeeeeeeeg',
-            email: 'strisdadads44@rss.com',
-            password: 'steweweqeqweqw',
-          });
-          apiResource.signInUser({
-          name: 'aleeeeeeeeg',
-          email: 'strisdadads44@rss.com',
-          password: 'steweweqeqweqw',
-          });
-    }
-});
+function sign(){
+    localStorage.name = (document.getElementById('register-name') as HTMLInputElement)?.value;
+    apiResource.createUser({
+      name: '1000-7',
+      email: 'ghoul@gmail.com',
+      password: 'asdasdasdasda',
+    });
+    apiResource.signInUser({
+      name: '1000-7',
+      email: 'ghoul@gmail.com',
+      password: 'asdasdasdasda',
+    });
+    document.body.prepend(userAvatar);
+}
 export default MainPage;
